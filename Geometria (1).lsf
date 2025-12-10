@@ -1,0 +1,83 @@
+switchtolayout;
+
+select("directional coupler");
+set("base height",Altura_Si3N4*1e-6);
+set("base width",Ancho_Si3N4*1e-6);
+set("Lc",L*1e-6);
+set("Lw",Lw*1e-6);
+set("Ls",Ls*1e-6);
+set("gap",gap*1e-6);
+set("y span",y_span*1e-6);
+set("x",-(Lw+Ls+L/2.0)*1e-6);
+set("y",(0)*1e-6);
+set("z",(0)*1e-6);
+
+select("SiO2");
+set("x",0);
+set("x span",(2*Lw+2*Ls+L)*1e-6);
+set("y span",Ancho_SiO2*1e-6);
+set("y",0);               #centra en y
+set("z span",Altura_SiO2*1e-6);
+set("z",-(Altura_Si3N4/2.0+Altura_SiO2/2.0)*1e-6);
+
+select("Silicio");
+set("x",0);
+set("x span",(2*Lw+2*Ls+L)*1e-6);
+set("y span",Ancho_SiO2*1e-6);
+set("y",0);                 #centra en y
+set("z span",Altura_Si*1e-6);
+set("z",-(Altura_Si3N4/2.0+Altura_SiO2+Altura_Si/2.0)*1e-6);
+
+select("Signal 1.542");
+set("x",-(Lw+Ls+L/2.0-0.2)*1e-6);
+set("y",-(y_span/2.0)*1e-6);
+set("y span",(6*Altura_Si3N4)*1e-6);
+set("center wavelength",(lambda)*1e-6);
+
+select("Video");
+set("x",0);
+set("x span",(3*Lw+2*Ls+L)*1e-6);
+set("y span",(Ancho_SiO2-4)*1e-6);
+set("y",0);                 #centra en y
+
+select("Monitor_L");
+set("x",0);
+set("x span",(3*Lw+2*Ls+L)*1e-6);
+set("y span",(Ancho_SiO2-4)*1e-6);
+set("y",0);
+
+select("Monitor_T1");
+set("x",(Lw+Ls+L/2.0-0.5)*1e-6);
+set("y",-(y_span/2.0)*1e-6);
+set("y span",(3*Altura_Si3N4)*1e-6);
+set("z span",(3*Altura_Si3N4)*1e-6);
+
+select("Monitor_T2");
+set("x",(Lw+Ls+L/2.0-0.5)*1e-6);
+set("y",(y_span/2.0)*1e-6);
+set("y span",(3*Altura_Si3N4)*1e-6);
+set("z span",(3*Altura_Si3N4)*1e-6);
+
+select("Monitor 100%");
+set("x",(Lw - L/2 - 10)*1e-6);
+set("y",-(y_span/2)*1e-6);
+set("y span",(3*Altura_Si3N4)*1e-6);
+set("z span",(3*Altura_Si3N4)*1e-6);
+
+select("Monitor 94.5%");
+set("x",(Lw - L/2 - 5)*1e-6);
+set("y",-(y_span/2 - 2)*1e-6);
+set("y span",(6*Altura_Si3N4)*1e-6);
+set("z span",(6*Altura_Si3N4)*1e-6);
+
+select("Monitor 93%");
+set("x",(Lw+Ls/2.0-8)*1e-6);
+set("y",-(y_span/2 - 2)*1e-6);
+set("y span",(6*Altura_Si3N4)*1e-6);
+set("z span",(6*Altura_Si3N4)*1e-6);
+
+select("Monitor 93%_1");
+set("x",(L/2+Lw+Ls/2.0 -8)*1e-6);
+set("y",-(y_span/2 - 2)*1e-6);
+set("y span",(6*Altura_Si3N4)*1e-6);
+set("z span",(6*Altura_Si3N4)*1e-6);
