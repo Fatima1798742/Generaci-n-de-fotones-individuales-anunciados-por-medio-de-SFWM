@@ -1,0 +1,34 @@
+switchtolayout;
+
+# ===========================================
+# DEFINICIÓN DEL CENTRO DEL DOMINIO FDE
+# ===========================================
+# Altura total considerada: Si3N4 + parte de SiO2 (ajusta si quieres más)
+centro_y_FDE = Alt_Si3N4(kk)/2.0;  
+
+# ===========================================
+# EXTENSIÓN EN X DEL DOMINIO
+# Incluye: guía izquierda + gap + guía derecha + margen adicional
+# ===========================================
+long_x_FDE = (gap + 2*Anc_Si3N4(ii) + 2*sale_FDE);
+
+# ===========================================
+# EXTENSIÓN EN Y DEL DOMINIO
+# Considera el espesor de la guía + margen adicional
+# ===========================================
+long_y_FDE = (Alt_Si3N4(kk) + 3*sale_FDE);
+
+# ===========================================
+# APLICAR AL OBJETO FDE
+# ===========================================
+select("FDE");
+
+# ---- Centro del dominio en X ----
+set("x", 0);
+set("x span", long_x_FDE*1e-6);
+set("mesh cells x", long_x_FDE * resol_FDE);
+
+# ---- Centro del dominio en Y ----
+set("y", centro_y_FDE*1e-6);
+set("y span", long_y_FDE*1e-6);
+set("mesh cells y", long_y_FDE * resol_FDE);

@@ -1,0 +1,51 @@
+switchtolayout;
+
+# ================================================
+# GUÍA DERECHA
+# ================================================
+select("Guia Derecha");
+set("x span", Anc_Si3N4(ii)*1e-6);              # ANCHO
+set("x", (Anc_Si3N4(ii)/2.0 + gap/2.0)*(1e-6));     # POSICIÓN
+set("y span", Alt_Si3N4(kk)*1e-6);              # ALTURA
+set("y", 0);                                    # POSICIÓN
+
+
+
+# ================================================
+# GUÍA IZQUIERDA
+# ================================================
+select("Guia Izquierda");
+
+set("x", -(gap/2 + Anc_Si3N4(ii)/2.0)*1e-6);    # POSICIÓN
+set("x span", Anc_Si3N4(ii)*1e-6);              # ANCHO
+
+set("y",0);             # POSICIÓN
+set("y span", Alt_Si3N4(kk)*1e-6);              # ALTURA
+
+
+# ================================================
+# CAPA SiO2
+# ================================================
+select("SiO2");
+
+set("x", 0);
+set("x span", Anc_SiO2*1e-6);
+
+# SiO2 está DEBAJO de las guías: 
+set("y", -(Alt_Si3N4(kk)/2.0 + Alt_SiO2/2.0)*1e-6);
+set("y span", Alt_SiO2*1e-6);
+
+
+# ================================================
+# CAPA SILICIO
+# ================================================
+select("Silicio");
+
+set("x", 0);
+set("x span", Anc_Si*1e-6);
+
+# Silicio está debajo de SiO2:
+set("y", -(Alt_Si3N4(kk)/2.0 + Alt_SiO2 + Alt_Si/2.0)*1e-6);
+set("y span", Alt_Si*1e-6);
+
+
