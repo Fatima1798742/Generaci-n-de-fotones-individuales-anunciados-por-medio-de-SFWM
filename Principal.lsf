@@ -1,0 +1,24 @@
+clear; 
+switchtolayout;
+
+Altura_Si3N4 = 0.46667;
+Ancho_Si3N4 = 0.5;
+L=170;
+Ls=5;
+Lw=5;
+y_span=4;
+gap=0.3;
+
+Ancho_SiO2 = 10;
+Altura_SiO2 = 1;
+Ancho_Si = 10;
+Altura_Si = 1;
+
+lambda=0.753;
+
+Precision_mesh_varFDTD=2;
+
+Geometria;
+Malla;
+
+run;

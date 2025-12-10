@@ -1,0 +1,9 @@
+switchtolayout;
+
+select("varFDTD");
+set("mesh accuracy",Precision_mesh_varFDTD);
+set("z span",(3*Altura_Si3N4)*1e-6);
+set("x span",(3*Lw+2*Ls+L)*1e-6);
+set("y span",(Ancho_SiO2-4)*1e-6);
+set("y0",-(y_span/2.0 - 0.04)*1e-6);
+set("x0",-(Lw+Ls+L/2.0-0.7)*1e-6);
