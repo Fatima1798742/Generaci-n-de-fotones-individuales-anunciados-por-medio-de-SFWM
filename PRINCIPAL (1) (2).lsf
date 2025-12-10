@@ -1,0 +1,101 @@
+cleardcard;
+clear;
+
+switchtolayout;                                       #inicio del diseño de la guia
+
+###################################### PARAMETROS DE ENTRADA############################################### 
+
+Alt_SiO2=1;                                           #Altura del SiO2
+Anc_SiO2=10;                                           #Ancho del SiO2
+Alt_Si=Alt_SiO2;                                      #Altura del Si                       				 
+Anc_Si=Anc_SiO2;                                      #Ancho del Si         
+
+resol_x_FDE=50;                                       #Resolucion en x de la malla FDE
+resol_y_FDE=50;                                       #Resolucion en y de la malla FDE
+sale_FDE=1;                                           #Medida entre el borde del nucleo y la malla FDE 
+
+Alt_ini=0.46667; Alt_fin=0.4667; num_puntos_Alt=1;           #Altura inicial y final del Si3N4 y numero de alturas
+Anc_ini=0.675; Anc_fin=0.675; num_puntos_Anc=1;           #Ancho inicial y final del Si3N4  y numero de anchos
+lamb_ini=0.753; lamb_fin=0.753; num_puntos_lamb=1;      #Longitud de onda inicial y final y numero de longitudes de onda
+
+Alt_Si3N4=linspace(Alt_ini,Alt_fin,num_puntos_Alt);   #Vector  de alturas del Si3N4
+Anc_Si3N4=linspace(Anc_ini,Anc_fin,num_puntos_Anc);   #Vector de anchos del Si3N4
+lamb=linspace(lamb_ini,lamb_fin,num_puntos_lamb);     #Vector de longitudes de onda
+
+#################### PARAMETROS PARA BUSCAR EN UN RANGO DE INDICES O CERCA DE UN INDICE ######################################  
+near_n=1;                                             #poner "0" para buscar en el rango min_n, max_n y "1" para buscar alrededor de n_near
+n_near = 2.2;                                         #indice alrededor del cual se calculan los modos (solo sirve cuando se activa el "near")
+min_n= 1.4;                                           #indice inferior del rango en el que se buscan los modos (solo sirve cuando se activa "in range")
+max_n =2.2;                                           #indice superior del rango en el que se buscan los modos (solo sirve cuando se activa "in range")
+
+###################################### HASTA AQUÍ PARAMETROS DE ENTRADA ####################################
+
+if (near_n == 1){                                     #Con estas lineas se activa la busqueda alrededor del indice n_near siempre que near_n=1
+    setanalysis("search", "near n");    
+    setanalysis("n",n_near);
+    setanalysis("use max index",0);
+}
+
+if (near_n == 0){                                     #Con estas lineas se activa la busqueda en un rango de indices siempre que near_n=0
+    setanalysis("search", "in range");    
+    setanalysis("n1",max_n);
+    setanalysis("n2",min_n);
+}
+
+####################### DEFINIR NÚMERO DE CORRIDA PARA LOS ARCHIVOS #################################
+run_number = 10000; 
+str_out = "resultados_" + num2str(run_number) + ".csv";
+
+#################### CREACION DE ARCHIVO CSV ######################################  
+# Escribir encabezados (agrego Aeff al final)
+header = "Altura (um),Ancho (um),Longitud de onda (um),Indice efectivo,Area efectiva (um^2)";   ### NUEVO ###
+write(str_out, header);
+
+###################################### BUCLES PRINCIPALES ######################################
+for(kk=1:num_puntos_Alt) {                             
+for(ii=1:num_puntos_Anc) {                             
+for(nn=1:num_puntos_lamb) {                            
+
+    setanalysis("wavelength", lamb(nn)*1e-6);          
+
+    Geometriafinal;
+    Mallasfinal;
+
+    nmodes = findmodes;
+    
+                                    
+    # Inicializar variables con valores por defecto (cero)
+    neff_modo1 = 0;
+    Aeff_modo1 = 0;
+    modo_encontrado = 0;
+    
+    if (nmodes == 0) {
+        print("No se encontró ningún modo para esta geometría.");
+        # No usar continue, en su lugar guardar los valores cero
+    } else {
+        selectmode('mode1'); 
+        neff_modo1 = real(getdata('mode1',"neff"));        
+        Aeff_modo1 = getdata('mode1',"mode effective area");              ### NUEVO ###
+        modo_encontrado = 1;
+        # --- Selección del modo fundamental con overlap ---
+        selectmode(1);
+        copydcard("mode1", "Modo_ref_te_fundamental");
+       
+    }
+
+
+    # Crear fila en formato CSV
+    fila = num2str(Alt_Si3N4(kk)) + "," + num2str(Anc_Si3N4(ii)) + "," + num2str(lamb(nn)) + "," + num2str(neff_modo1) + "," + num2str(Aeff_modo1);
+
+    # Guardar en archivo
+    write(str_out, fila);
+
+    if (modo_encontrado == 1) {
+        print("Altura = " + num2str(Alt_Si3N4(kk)) + ", Ancho = " + num2str(Anc_Si3N4(ii)) + ", Lambda = " + num2str(lamb(nn)) + ", neff = " + num2str(neff_modo1) + ", Aeff = " + num2str(Aeff_modo1));
+    } else {
+        print("Altura = " + num2str(Alt_Si3N4(kk)) + ", Ancho = " + num2str(Anc_Si3N4(ii)) + ", Lambda = " + num2str(lamb(nn)) + ", neff = 0, Aeff = 0 (NO SE ENCONTRÓ MODO)");
+    }
+
+}   
+}   
+}
